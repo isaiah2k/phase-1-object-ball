@@ -115,127 +115,149 @@ function gameObject() {
   }
 }
 
-function getAllPlayers() {
-  const game = gameObject()
-  const allPlayers = {}
-  const teams = [game.home, game.away]
-
-  teams.forEach(function(team) {
-    const players = team.players
-    const playerNames = Object.keys(players)
-
-    playerNames.forEach(function(playerName) {
-      allPlayers[playerName] = players[playerName]
-    })
-  })
-
-  return allPlayers
-}
-
+// Function to get the number of points scored by a player
 function numPointsScored(playerName) {
+  // Gets the combined list of all players
   const players = getAllPlayers()
-  return players[playerName] ? players[playerName].points : "Player not found"
+  // Return the points scored by the player or "Player not found" if the player doesn't exist
+  return players[playerName] ? players[playerName].points : "Player not found" 
 }
 
+// Function to get the shoe size of a player
 function shoeSize(playerName) {
-  const players = getAllPlayers()
-  return players[playerName] ? players[playerName].shoe : "Player not found"
+  // Gets the combined list of all players
+  const players = getAllPlayers() 
+  // Returns the shoe size of the player or "Player not found" if the player doesn't exist
+  return players[playerName] ? players[playerName].shoe : "Player not found" 
 }
 
+// Function to get the colors of a team
 function teamColors(teamName) {
+  // Get the game object
   const game = gameObject()
   if (game.home.teamName === teamName) {
+    // Returns the colors of the home team if the teamName matches
     return game.home.colors
   } else if (game.away.teamName === teamName) {
-    return game.away.colors
+    // Returns the colors of the away team if the teamName matches
+    return game.away.colors 
   } else {
+    // Returns "Team not found" if the teamName doesn't match any team
     return "Team not found"
   }
 }
 
+// Function to get the names of all teams
 function teamNames() {
+  // Get the game object
   const game = gameObject()
+  // Return an array containing the names of both teams
   return [game.home.teamName, game.away.teamName]
 }
 
+// Function to get the jersey numbers of all players in a team
 function playerNumbers(teamName) {
-  const game = gameObject()
+  // Gets the game object
   let team
+  const game = gameObject()
   if (game.home.teamName === teamName) {
+    // Sets the team to home if the teamName matches
     team = game.home
   } else if (game.away.teamName === teamName) {
+    // Sets the team to away if the teamName matches
     team = game.away
   }
 
   if (team) {
+    // Initialize an empty array to hold jersey numbers
     const jerseyNumbers = []
+    // Get the names of all players in the team
     const playerNames = Object.keys(team.players)
 
+    // Iterates over each player name
     playerNames.forEach(function(playerName) {
+      // Adds the player's jersey number to the jerseyNumbers array
       jerseyNumbers.push(team.players[playerName].number)
     })
-
+  // Returns the array of jersey numbers
     return jerseyNumbers
   } else {
+    // Return "Team not found" if the teamName doesn't match any team
     return "Team not found"
   }
 }
 
+// Function to get the statistics of a player
 function playerStats(playerName) {
+  // Get the combined list of all players
   const players = getAllPlayers()
+  // Return the statistics of the player or "Player not found" if the player doesn't exist
   return players[playerName] ? players[playerName] : "Player not found"
 }
 
+// Function to get the number of rebounds by the player with the largest shoe size
 function bigShoeRebounds() {
   const players = getAllPlayers()
+  // Gets the combined list of all players
   let maxShoeSize = 0
   let rebounds = 0
-
+  // Gets the names of all players
   const playerNames = Object.keys(players)
-
+  // Iterates over each player name
   playerNames.forEach(function(playerName) {
     if (players[playerName].shoe > maxShoeSize) {
+      // Updates the maxShoeSize
       maxShoeSize = players[playerName].shoe
+      // Updates the rebounds for the player with the largest shoe size
       rebounds = players[playerName].rebounds
     }
   })
-
+  // Returns the number of rebounds by the player with the largest shoe size
   return rebounds
 }
 
+// Function to get the player with the most points scored
 function mostPointsScored() {
+  // Gets the combined list of all players
   const players = getAllPlayers()
+  // Initializes an empty string to hold the name of the top scorer
   let topScorer = ""
+  // Initializes a variable to hold the maximum points scored by any player
   let maxPoints = 0
-
+  // Gets the names of all players
   const playerNames = Object.keys(players)
-
+// Iterates over each player name
   playerNames.forEach(function(playerName) {
     if (players[playerName].points > maxPoints) {
+      // Updates the maxPoints
       maxPoints = players[playerName].points
+      // Updates the topScorer
       topScorer = playerName
     }
   })
-
+  // Returns the player with the most points scored
   return topScorer
 }
 
+// Function to get the name of the winning team
 function winningTeam() {
+  // Gets the game object
   const game = gameObject()
   let homePoints = 0
   let awayPoints = 0
-
+  // Gets the names of home team players
   const homePlayerNames = Object.keys(game.home.players)
+  // Gets the names of away team players
   const awayPlayerNames = Object.keys(game.away.players)
-
+  // Calculates total points for the home team
   homePlayerNames.forEach(function(playerName) {
     homePoints += game.home.players[playerName].points
   })
-
+  // Calculates total points for the away team
   awayPlayerNames.forEach(function(playerName) {
     awayPoints += game.away.players[playerName].points
   })
-
+  // Determines the winning team based on the total points
   if (homePoints > awayPoints) {
     return game.home.teamName
   } else {
@@ -243,37 +265,46 @@ function winningTeam() {
   }
 }
 
+// Function to get the player with the longest name
 function playerWithLongestName() {
+  // Gets the combined list of all players
   const players = getAllPlayers()
   let longestName = ""
-
+  // Gets the names of all players
   const playerNames = Object.keys(players)
-
+  // Iterates over each player name
   playerNames.forEach(function(playerName) {
+    // Updates the longestName
     if (playerName.length > longestName.length) {
       longestName = playerName
     }
   })
-
+  // Returns the player with the longest name
   return longestName
 }
 
+// Function to check if the player with the longest name has the most steals
 function doesLongNameStealATon() {
+  // Gets the combined list of all players
   const players = getAllPlayers()
+  // Gets the player with the longest name
   const longestNamePlayer = playerWithLongestName()
+  // Initializes a variable to hold the maximum number of steals by any player
   let maxSteals = 0
+  // Initializes an empty string to hold the name of the player with the most steals
   let playerWithMaxSteals = ""
-
+  // Gets the names of all players
   const playerNames = Object.keys(players)
-
+  // Iterates over each player name
   playerNames.forEach(function(playerName) {
     if (players[playerName].steals > maxSteals) {
+      // Updates the maxSteals
       maxSteals = players[playerName].steals
+      // Updates the playerWithMaxSteals
       playerWithMaxSteals = playerName
     }
   })
 
+  // Checks if the player with the longest name has the most steals
   return players[longestNamePlayer].steals === players[playerWithMaxSteals].steals
 }
-
-
